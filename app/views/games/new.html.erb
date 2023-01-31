@@ -1,0 +1,14 @@
+<div class="container">
+  <h1>NEW GAME</h1>
+
+  <ul class="letters">
+    <% @letters.each do |letter| %>
+      <li><%= letter %></li>
+    <% end %>
+  </ul>
+
+  <div class="input-group">
+    <input type="text" name="word" class="form-control">
+    <input type="submit" value="play" class="btn btn-primary">
+  </div>
+</div>
