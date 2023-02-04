@@ -10,7 +10,23 @@ class GamesController < ApplicationController
   end
 
   def score
+    @letters = params[:letters].split
+    @word = (params[:word] || "").upcase
+    @included = included?(@word, @letters)
+    @english_word = english_word?(@word)
   end
+end
+
+private
+
+def included?(word, letters)
+  word.chars.all? { |letter| word.count(letter) <= letters.count(letter) }
+end
+
+def english_word?(word)
+  response = URI.open("https://wagon-dictionary.herokuapp.com/#{word}")
+  json = JSON.parse(response.read)
+  json['found']
 end
 
 # how to generate an array from random letters?
@@ -23,4 +39,8 @@ end
 # a notation to write an array of strings separated by spaces instead of commas and without quotes around them.
 # creamos asi el array VOWELS = %w(A E I O U Y)
 
-# how to return an array of 5 random letters in ruby?
+# vemos que los params son los parametros o atributos que estan dentro de nuestra web
+# cuando hicimos el raise dentro del score vemos los siguientes elementos:
+# letters"=>"Y I Y P X X L I I Z", "word"=>"", "controller"=>"games", "action"=>"score"
+# de los cuales podemos tomar los parametros letters, el cual vamos a hacedr split para tener todas las letras comos string
+# y los parametros word, el cual vamos a llamar y haremos upcase para que sea en mayuscula como las letras
